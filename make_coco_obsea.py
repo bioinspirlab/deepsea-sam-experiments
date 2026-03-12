@@ -8,6 +8,7 @@ outputs into standardized COCO JSON format for evaluation.
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
 
@@ -77,31 +78,34 @@ def build_coco_gt(
     image_map = {}
     
     for img_file in sorted(image_dir.glob("*.jpg")):
-        image_map[img_file.stem] = image_id
+        image_map[os.path.basename(str(img_file))] = image_id
         img = cv2.imread(str(img_file))
         height, width = img.shape[:2]
         
         coco_data["images"].append({
             "id": image_id,
-            "file_name": img_file.name,
+            "file_name": os.path.basename(str(img_file)),
             "width": width,
             "height": height
         })
         image_id += 1
-    
+        
+    print(image_map.keys())
     for _, row in df.iterrows():
         image_name = row['IMAGE']
-        if image_name not in image_map:
+        if image_name not in image_map.keys():
             continue
         
+        print(image_name)
         img_id = image_map[image_name]
         coords = np.array([
-            [row['x1'], row['y1']],
-            [row['x2'], row['y2']],
-            [row['x3'], row['y3']],
-            [row['x4'], row['y4']]
+            [row['bboxx1 [pixel]'], row['bboxy1 [pixel]']],
+            [row['bboxx2 [pixel]'], row['bboxy2 [pixel]']],
+            [row['bboxx3 [pixel]'], row['bboxy3 [pixel]']],
+            [row['bboxx4 [pixel]'], row['bboxy4 [pixel]']]
         ])
         
+        print(coords)
         x, y, w, h = retrieve_parallel(coords)
         
         coco_data["annotations"].append({
