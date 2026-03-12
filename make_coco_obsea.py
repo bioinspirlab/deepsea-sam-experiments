@@ -90,7 +90,7 @@ def build_coco_gt(
         image_id += 1
     
     for _, row in df.iterrows():
-        image_name = row['image_name']
+        image_name = row['IMAGE']
         if image_name not in image_map:
             continue
         
@@ -135,7 +135,7 @@ def main():
         "--annotation-file",
         type=Path,
         default=None,
-        help="Ground truth annotation file (default: {data-dir}/obsea_fish_2013_14.tab)"
+        help="Ground truth annotation file (default: {data-dir}/PANGAEA.946149.csv)"
     )
     parser.add_argument(
         "--image-dir",
@@ -154,7 +154,7 @@ def main():
     
     # Set defaults based on data-dir
     data_dir = args.data_dir
-    annotation_file = args.annotation_file or data_dir / "obsea_fish_2013_14.tab"
+    annotation_file = args.annotation_file or data_dir / "PANGAEA.946149.csv"
     image_dir = args.image_dir or data_dir / "image_data"
     output_gt = args.output_gt or data_dir / "gt-rectified-coco.json"
    
