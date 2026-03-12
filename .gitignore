@@ -163,6 +163,8 @@ cython_debug/
 
 # others
 plan.md
+*/image_data/*
 *.jpg
 *.jpeg
 *.png
+*PANGAEA.946149.csv
