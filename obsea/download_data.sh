@@ -4,9 +4,10 @@ set -e
 
 # Download PANGAEA dataset file to obsea directory, removing 34 lines of header metadata
 URL="https://doi.pangaea.de/10.1594/PANGAEA.946149?format=textfile"
-OUTPUT_DIR="${1:-.}/obsea"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OUTPUT_DIR="${2:-${SCRIPT_DIR}/obsea"
 FILENAME="${2:-PANGAEA.946149.csv}"
-LIST_FILE="${1:-.}/obsea/image_list.txt"
+LIST_FILE="${2:-${SCRIPT_DIR}/obsea/image_list.txt"
 IMAGE_URL_PREFIX="https://download.pangaea.de/dataset/946149/files/"
 IMAGE_DIR="$OUTPUT_DIR/image_data"
 MAX_RETRIES=360
